@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 100%"></div>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+var trades = [
+        {name: 'IM'},
+        {name: 'Ecommerce'},
+        {name: 'Finance'},
+        {name: 'Game'},
+        {name: 'Management'},
+        {name: 'Development'},
+        {name: 'Market'},
+        {name: 'Search'},
+        {name: 'Strategy'},
+        {name: 'Product'},
+        {name: 'Ecommerce_then'},
+        {name: 'Finance_then'},
+        {name: 'CorporateServices_then'},
+        {name: 'Car_then'},
+        {name: 'LifeProducts_then'},
+        {name: 'CultureProducts_then'},
+        {name: 'Medicince_then'},
+        {name: 'Game_then'}
+    ];
+var changes = [
+        {source: 'IM', target: 'Ecommerce_then', value: 893},
+        {source: 'IM', target: 'Finance_then', value: 1098},
+        {source: 'IM', target: 'CorporateServices_then', value: 1153},
+        {source: 'IM', target: 'Car_then', value: 712},
+        {source: 'IM', target: 'LifeProducts_then', value: 593},
+        {source: 'IM', target: 'CultureProducts_then', value: 868},
+        {source: 'IM', target: 'Medicince_then', value: 1065},
+        {source: 'IM', target: 'Game_then', value: 431},
+        {source: 'Ecommerce', target: 'Ecommerce_then', value: 489},
+        {source: 'Ecommerce', target: 'Finance_then', value: 490},
+        {source: 'Ecommerce', target: 'CorporateServices_then', value: 997},
+        {source: 'Ecommerce', target: 'Car_then', value: 593},
+        {source: 'Ecommerce', target: 'LifeProducts_then', value: 1065},
+        {source: 'Ecommerce', target: 'CultureProducts_then', value: 854},
+        {source: 'Ecommerce', target: 'Medicince_then', value: 1006},
+        {source: 'Ecommerce', target: 'Game_then', value: 719},
+        {source: 'Finance', target: 'Ecommerce_then', value: 496},
+        {source: 'Finance', target: 'Finance_then', value: 544},
+        {source: 'Finance', target: 'CorporateServices_then', value: 683},
+        {source: 'Finance', target: 'Car_then', value: 804},
+        {source: 'Finance', target: 'LifeProducts_then', value: 1094},
+        {source: 'Finance', target: 'CultureProducts_then', value: 966},
+        {source: 'Finance', target: 'Medicince_then', value: 434},
+        {source: 'Finance', target: 'Game_then', value: 922},
+        {source: 'Game', target: 'Ecommerce_then', value: 501},
+        {source: 'Game', target: 'Finance_then', value: 492},
+        {source: 'Game', target: 'CorporateServices_then', value: 1169},
+        {source: 'Game', target: 'Car_then', value: 983},
+        {source: 'Game', target: 'LifeProducts_then', value: 1139},
+        {source: 'Game', target: 'CultureProducts_then', value: 882},
+        {source: 'Game', target: 'Medicince_then', value: 833},
+        {source: 'Game', target: 'Game_then', value: 476},
+        {source: 'Management', target: 'Ecommerce_then', value: 510},
+        {source: 'Management', target: 'Finance_then', value: 657},
+        {source: 'Management', target: 'CorporateServices_then', value: 552},
+        {source: 'Management', target: 'Car_then', value: 1006},
+        {source: 'Management', target: 'LifeProducts_then', value: 656},
+        {source: 'Management', target: 'CultureProducts_then', value: 1039},
+        {source: 'Management', target: 'Medicince_then', value: 493},
+        {source: 'Management', target: 'Game_then', value: 636},
+        {source: 'Development', target: 'Ecommerce_then', value: 1190},
+        {source: 'Development', target: 'Finance_then', value: 693},
+        {source: 'Development', target: 'CorporateServices_then', value: 1075},
+        {source: 'Development', target: 'Car_then', value: 584},
+        {source: 'Development', target: 'LifeProducts_then', value: 484},
+        {source: 'Development', target: 'CultureProducts_then', value: 1188},
+        {source: 'Development', target: 'Medicince_then', value: 508},
+        {source: 'Development', target: 'Game_then', value: 563},
+        {source: 'Market', target: 'Ecommerce_then', value: 747},
+        {source: 'Market', target: 'Finance_then', value: 567},
+        {source: 'Market', target: 'CorporateServices_then', value: 878},
+        {source: 'Market', target: 'Car_then', value: 639},
+        {source: 'Market', target: 'LifeProducts_then', value: 765},
+        {source: 'Market', target: 'CultureProducts_then', value: 779},
+        {source: 'Market', target: 'Medicince_then', value: 494},
+        {source: 'Market', target: 'Game_then', value: 1018},
+        {source: 'Search', target: 'Ecommerce_then', value: 735},
+        {source: 'Search', target: 'Finance_then', value: 683},
+        {source: 'Search', target: 'CorporateServices_then', value: 449},
+        {source: 'Search', target: 'Car_then', value: 770},
+        {source: 'Search', target: 'LifeProducts_then', value: 887},
+        {source: 'Search', target: 'CultureProducts_then', value: 537},
+        {source: 'Search', target: 'Medicince_then', value: 1100},
+        {source: 'Search', target: 'Game_then', value: 633},
+        {source: 'Strategy', target: 'Ecommerce_then', value: 963},
+        {source: 'Strategy', target: 'Finance_then', value: 422},
+        {source: 'Strategy', target: 'CorporateServices_then', value: 1066},
+        {source: 'Strategy', target: 'Car_then', value: 1099},
+        {source: 'Strategy', target: 'LifeProducts_then', value: 701},
+        {source: 'Strategy', target: 'CultureProducts_then', value: 1182},
+        {source: 'Strategy', target: 'Medicince_then', value: 483},
+        {source: 'Strategy', target: 'Game_then', value: 631},
+        {source: 'Product', target: 'Ecommerce_then', value: 525},
+        {source: 'Product', target: 'Finance_then', value: 585},
+        {source: 'Product', target: 'CorporateServices_then', value: 1146},
+        {source: 'Product', target: 'Car_then', value: 1133},
+        {source: 'Product', target: 'LifeProducts_then', value: 1042},
+        {source: 'Product', target: 'CultureProducts_then', value: 631},
+        {source: 'Product', target: 'Medicince_then', value: 931},
+        {source: 'Product', target: 'Game_then', value: 1030}
+    ];
+
+
+option = {
+    title:{
+        text:'What field are employees working on after thet resignment' ,
+        x:'center'
+    },
+    tooltip: {
+            trigger: 'item',
+            triggerOn: 'mousemove'
+    },
+    series: {
+        type: 'sankey',
+        nodeWidth:30,
+        focusNodeAdjacency: 'allEdges',
+        data: trades,
+        links: changes,
+        lineStyle:{
+            color:'source',
+            curveness: 0.67
+        }
+    }
+};
+;;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>
